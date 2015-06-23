@@ -1,5 +1,21 @@
+from copy import deepcopy
 import pandas as pd
 import re
+
+def averageBenchmarks(*filenames):
+    benchmarks = [parseBenchmark(filename) for filename in filenames]
+    combinedBenchmark = mergeDicts(*benchmarks)
+    averagedBenchmarks = { key : averageSections(*combinedBenchmarks[key])
+                           for key in combinedBenchmarks }
+    return averagedBenchmarks
+
+def compareBenchmarks(benchmark1, benchmark2):
+    unusedKeys = [key for key in benchmark1 if key not in benchmark2]
+    unusedKeys.append([key for key in benchmark2 if key not in benchmark1])
+    compared = { key : differenceSections(benchmark1[key], benchmark2[key])
+                 for key in benchmark1 if key in benchmark2 }
+    return compared
+    
 def parseBenchmark(filename):
     benchmark = {}
     with open(filename, "rb") as file:
@@ -35,11 +51,23 @@ def parseSection(body):
     
     return data
 
-def averageBenchmarks(*benchmarks):
+def averageSections(*benchmarks):
     combinedBenchmarks = pd.Panel({n: df for n, df in enumerate(benchmarks)})
     return combinedBenchmarks.mean(axis=0)
 
 
-def differenceBenchmarks(bench1, bench2):
+def differenceSections(bench1, bench2):
     return bench1 - bench2
 
+def mergeDicts(*dicts):
+    """Return a new dictionary with the keys of all elements in dicts, where
+    the values are placed in lists so as not to lose any elements.
+    EG: mergeDicts({'a' : 1, 'b' : 2}, {'a' : 3}) = {'a': [1,3], 'b' : [2]}"""
+    dict = {}
+    for dict in dicts
+        for key in dict:
+            if key in dict:
+                dict[key].append(deepcopy(dict[key]))
+            else:
+                dict[key] = [deepcopy(dict[key])]
+    return dict

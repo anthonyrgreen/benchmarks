@@ -1,7 +1,8 @@
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
+from parse import averageBenchmarks, compareBenchmarks
 from os.path import join, exists
-from os import makedirs
+from os import makedirs, listdir
 from subprocess import call
 from datetime import datetime
 
@@ -11,8 +12,18 @@ benchmarksDir = config.get("dirs", "benchmark_dirs")
 
 # Load two benchmarks into memory, then compare them one by one
 def compareBenchmarks(args):
-    
-    
+    benchmark1Dir = join(benchmarksDir, args.benchmark1)
+    benchmark2Dir = join(benchmarksDir, args.benchmark2)
+    benchmark1Filenames = [ f for f in listdir(benchmark1Dir) 
+                            if isfile(join(benchmark1Dir,f)) ]
+    benchmark2Filenames = [ f for f in listdir(benchmark2Dir) 
+                            if isfile(join(benchmark2Dir,f)) ]
+    benchmark1 = averageBenchmarks(*benchmark1Filenames)
+    benchmark2 = averageBenchmarks(*benchmark2Filenames)
+    comparison = compareBenchmarks(benchmark1, benchmark2)
+    for key in comparison:
+        print key
+        print comparison[key]
     
 # Create a folder for a benchmark and then run the benchmark n times to fill it
 def createBenchmark(args):
