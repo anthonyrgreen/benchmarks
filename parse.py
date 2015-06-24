@@ -4,7 +4,7 @@ import re
 
 def averageBenchmarks(*filenames):
     benchmarks = [parseBenchmark(filename) for filename in filenames]
-    combinedBenchmark = mergeDicts(*benchmarks)
+    combinedBenchmarks = mergeDicts(*benchmarks)
     averagedBenchmarks = { key : averageSections(*combinedBenchmarks[key])
                            for key in combinedBenchmarks }
     return averagedBenchmarks
@@ -63,11 +63,11 @@ def mergeDicts(*dicts):
     """Return a new dictionary with the keys of all elements in dicts, where
     the values are placed in lists so as not to lose any elements.
     EG: mergeDicts({'a' : 1, 'b' : 2}, {'a' : 3}) = {'a': [1,3], 'b' : [2]}"""
-    dict = {}
-    for dict in dicts
+    newDict = {}
+    for dict in dicts:
         for key in dict:
-            if key in dict:
-                dict[key].append(deepcopy(dict[key]))
+            if key in newDict:
+                newDict[key].append(deepcopy(dict[key]))
             else:
-                dict[key] = [deepcopy(dict[key])]
-    return dict
+                newDict[key] = [deepcopy(dict[key])]
+    return newDict
