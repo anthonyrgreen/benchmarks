@@ -40,6 +40,8 @@ application's home folder. To store them in a custom folder, simply make
 
 > [grundoon]$ ./app create $BENCHMARK_EXEC /tmp/grundoon/customBenchmarkFolder/test3
 
+It goes without saying that in order to create a benchmark, openmpi and its
+associated compiler must be loaded on the system and available via the $PATH.
 
 
 =========
