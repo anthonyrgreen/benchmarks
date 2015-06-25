@@ -7,14 +7,16 @@ https://software.intel.com/en-us/articles/intel-mpi-benchmarks. Using this
 application, a user can save that output and compare it against subsequent
 runs of the benchmarking software.
 
-There are only two modes in which this program can be run: "create" and
-"compare". 
+To install the program, simply run the "setup" script. This must be done prior
+to first use.
 
 Note that this program uses Rython's dictionary comprehensions, which were not
 available prior to Python 2.7. It also uses the "argparse" and "pandas"
 modules. The bash wrapper script simply loads the anaconda2 module, which
 supplies all of these features.
 
+There are only two modes in which this program can be run: "create" and
+"compare". 
 
 =========
 ./app create [-h] [--trials TRIALS] test_program_path benchmark_name:
