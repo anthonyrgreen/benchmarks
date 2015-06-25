@@ -55,11 +55,11 @@ def create(args):
 examplesStr = \
 """Here is an example showing how to create two benchmarks and subsequently compare them:
 [grundoon]$ BENCHMARK_EXEC="/tmp/argreen/imb/src/imb/src/IMB-MPI1"
-[grundoon]$ ./app.py create $BENCHMARK_EXEC test1
-[grundoon]$ ./app.py create $BENCHMARK_EXEC test2 --trials 10
-[grundoon]$ ./app.py compare test1 test2
+[grundoon]$ ./app create $BENCHMARK_EXEC test1
+[grundoon]$ ./app create $BENCHMARK_EXEC test2 --trials 10
+[grundoon]$ ./app compare test1 test2
 For more than summary statistics, replace the last command with:
-[grundoon]$ ./app.py compare test1 test2 -v
+[grundoon]$ ./app compare test1 test2 -v
 
 Benchmarks are stored in the "benchmarks" folder for future inspection and reuse."""
 main_parser = ArgumentParser(description="Make and compare openmpi benchmarks", epilog=examplesStr, formatter_class=RawTextHelpFormatter)
