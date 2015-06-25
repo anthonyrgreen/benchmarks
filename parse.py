@@ -2,6 +2,7 @@ from copy import deepcopy
 import pandas as pd
 import re
 
+
 def averageBenchmarks(*filenames):
     benchmarks = [parseBenchmark(filename) for filename in filenames]
     combinedBenchmarks = mergeDicts(*benchmarks)
@@ -12,9 +13,13 @@ def averageBenchmarks(*filenames):
 def compareBenchmarks(benchmark1, benchmark2):
     unusedKeys = [key for key in benchmark1 if key not in benchmark2]
     unusedKeys.append([key for key in benchmark2 if key not in benchmark1])
-    compared = { key : differenceSections(benchmark1[key], benchmark2[key])
+    compared = { key : relativeDifferenceSections(benchmark1[key], benchmark2[key])
                  for key in benchmark1 if key in benchmark2 }
+    pd.options.display.float_format = '{:,.2f}%'.format
     return compared
+
+def benchmarkStats(benchmark):
+    return { key : sectionStats(benchmark[key]) for key in benchmark }
     
 def parseBenchmark(filename):
     benchmark = {}
@@ -56,8 +61,19 @@ def averageSections(*benchmarks):
     return combinedBenchmarks.mean(axis=0)
 
 
-def differenceSections(bench1, bench2):
+def absoluteDifferenceSections(bench1, bench2):
     return bench1 - bench2
+
+def relativeDifferenceSections(bench1, bench2):
+    return 100 * (bench1 - bench2) / bench1
+
+def sectionStats(section):
+    min = section.min(axis=0)
+    max = section.max(axis=0)
+    avg = section.mean(axis=0)
+    return pd.DataFrame( { 'min' : min,
+                           'max' : max,
+                           'avg' : avg } ).T
 
 def mergeDicts(*dicts):
     """Return a new dictionary with the keys of all elements in dicts, where
